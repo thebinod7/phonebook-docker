@@ -2,20 +2,8 @@
 # MERN DOCKER
 
 Dockerize Node, React and MongoDB with docker compose
-## Environment Variables
 
-To run this project, you will need to add the following environment variables to your express app
-
-
-```
-    CD to project-dir/server
-    add .env file
-    
-    place:
-    PORT=7000
-    MONGO_URI=mongodb://mongo:27017/test_db
-
-```
+*note: Docker and docker compose must be installed on your machine
 ## Run Locally
 
 Clone the project
@@ -30,7 +18,7 @@ Go to the project directory
   cd my-project
 ```
 
-Install dependencies
+Add dependencies
 
 ```bash
     add .env file inside my-project/server
