@@ -5,11 +5,8 @@ const cors = require('cors');
 
 require('dotenv').config();
 
+const MONGO_URI = process.env.MONGO_URI;
 const app = express();
-
-
-// Gets the Username and Password 
-const MONGO_URI = `mongodb://mongo:27017/docker_test_db`;
 
 app.use(cors());
 
