@@ -1,0 +1,45 @@
+# Version of Docker-compose
+version: '3.8'
+services:
+  # Service name
+  react:
+    build: 
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    depends_on:
+      - node
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+  node:
+    # Creating a custom image
+    build:
+      # Location to the Dockerfile
+      context: ./server
+      # Name of the Dockerfile
+      dockerfile: Dockerfile
+    ports:
+        # External port:Internal port
+      - 7000:7000
+    # volumes:
+    #   - nodeVolume:/server
+    #   - .:/server:ro
+    #   - /server/node_modules
+    depends_on:
+      - mongo
+  mongo:
+    # Official mongo image from docker.hub
+    image: mongo
+    # environment:
+      # Username for the mongo database
+      # - MONGO_INITDB_ROOT_USERNAME=mern
+      # Password for the mongo database
+      # - MONGO_INITDB_ROOT_PASSWORD=merndocker
+    volumes:
+      # <nameOfVolume>:<directorInDocker>
+      - mongoDB:/data/db
+
+volumes:
+  # nodeVolume:
+  mongoDB:
