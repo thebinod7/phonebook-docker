@@ -16,15 +16,32 @@ To run this project, you will need to add the following environment variables to
     MONGO_URI=mongodb://mongo:27017/test_db
 
 ```
-## Run Application
+## Run Locally
 
-Run app with docker compose
+Clone the project
 
-*note: Make sure docker and docker compose is installed on your machine
-
-Instructions
-
+```bash
+  git clone https://github.com/thebinod7/phonebook-docker.git
 ```
-    - CD to project root
-    - Run 'sudo docker compose up -d --build' without quote
+
+Go to the project directory
+
+```bash
+  cd my-project
+```
+
+Install dependencies
+
+```bash
+    add .env file inside my-project/server
+    
+    place:
+    PORT=7000
+    MONGO_URI=mongodb://mongo:27017/test_db
+```
+
+Start the server
+
+```bash
+  sudo docker compose up -d --build
 ```
