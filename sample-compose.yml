@@ -1,0 +1,118 @@
+version: "3.8"
+services:
+  mongo_service:
+    container_name: devcolumn_db
+    image: mongo
+    restart: always
+    ports:
+     - 27018:27017
+    #persistent db volume
+    #mounted to host's mongodb path
+    #check /etc/mongodb.conf for the default path
+    volumes:
+       - devcolumn_mongo_db:/data/db
+    networks:
+      - devcolumn-nw
+
+  administration_api:
+    depends_on:
+      - mongo_service
+    container_name: devcolumn_administration_api
+    build:
+      context: ./administration_api
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./administration_api:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 3040:3040
+    restart: always
+    networks:
+      - devcolumn-nw
+
+  administration_client:
+    depends_on:
+      - administration_api
+    container_name: devcolumn_administration_client
+    build:
+      context: ./administration_client
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./administration_client:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 3050:3050
+    restart: always
+    networks:
+      - devcolumn-nw
+  
+  marketplace_api:
+    depends_on:
+      - administration_api
+      - mongo_service
+    container_name: devcolumn_marketplace_api
+    build:
+      context: ./marketplace_api
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./marketplace_api:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 4321:4321
+    restart: always
+    networks:
+      - devcolumn-nw
+
+  marketplace_admin:
+    depends_on:
+      - marketplace_api
+      - administration_api
+    container_name: devcolumn_marketplace_admin
+    build:
+      context: ./marketplace_admin
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./marketplace_admin:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 4050:4050
+    restart: always
+    networks:
+      - devcolumn-nw
+  
+    
+  marketplace_client:
+    depends_on:
+      - marketplace_api
+      - administration_api
+    container_name: devcolumn_marketplace_client
+    build:
+      context: ./marketplace_client
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./marketplace_client:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 4060:4060
+    restart: always
+    networks:
+      - devcolumn-nw
+
+  website:
+    depends_on:
+      - administration_api
+    container_name: devcolumn_website
+    build:
+      context: ./website
+    ports:
+      - 4432:4432
+    restart: always
+    networks:
+      - devcolumn-nw
+
+volumes:
+  devcolumn_mongo_db:
+
+networks:
+  devcolumn-nw:
+    driver: bridge
