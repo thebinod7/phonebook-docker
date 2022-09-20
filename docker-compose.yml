@@ -31,6 +31,8 @@ services:
   mongo:
     # Official mongo image from docker.hub
     image: mongo
+    ports:
+      - "127.0.0.1:27018:27017" # <port>:<port> mapping is public as host binds to 0.0.0.0
     # environment:
       # Username for the mongo database
       # - MONGO_INITDB_ROOT_USERNAME=mern
